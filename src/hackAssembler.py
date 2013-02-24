@@ -5,6 +5,8 @@ Elements
 python version 2.7
 """
 from jackparser import Parser
+from hackAssemblyToBinary import converter
+from BadSyntaxException import BadSyntaxException
 import sys
 
 
@@ -12,10 +14,18 @@ def parseFile(inputFile):
     outputFile = inputFile.split('.')[0] + ".hack"
     try:
         parse = Parser(inputFile)
+        convert = converter()
         out = open(outputFile, "w")
         while parse.hasMoreCommands():
             parse.advance()
-            out.write(parse.output().strip() + "\n")
+            parcedLine = parse.output().strip()
+            if parcedLine != "":
+                try:
+                    print (parcedLine)
+                    print(convert.convertStatment(parcedLine))
+                    out.write(convert.convertStatment(parcedLine) + "\n")
+                except BadSyntaxException:
+                    print("Bad Syntax!")
         out.close()
     except IOError:
         print("File " + inputFile +" can not be open")
