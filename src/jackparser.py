@@ -13,8 +13,11 @@ class Parser():
         if self.fileName == None:
             print("No file was given!")
             sys.exit()
-        self.file = open(self.fileName, "r")
-       
+        try:
+            self.file = open(self.fileName, "r")
+        except:
+            raise IOError
+            
         self.currentLine = ""
         self.lines = 0
         self.chars = 0

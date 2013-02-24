@@ -8,20 +8,25 @@ from jackparser import Parser
 import sys
 
 
-def parseFile(inputFile, outputFile):
-    out = open(outputFile, "w")
-    c = Parser(inputFile)
-    while c.hasMoreCommands():
-        c.advance()
-        out.write(c.output().strip() + "\n")
-    out.close()
+def parseFile(inputFile):
+    outputFile = inputFile.split('.')[0] + ".hack"
+    try:
+        parse = Parser(inputFile)
+        out = open(outputFile, "w")
+        while parse.hasMoreCommands():
+            parse.advance()
+            out.write(parse.output().strip() + "\n")
+        out.close()
+    except IOError:
+        print("File " + inputFile +" can not be open")
+        
 
 
 def main():
     if len(sys.argv) < 2:
         print ("No file name given")
     else:
-        parseFile(sys.argv[1], "out.hack")
+        parseFile(sys.argv[1])
 
 
 if __name__ == '__main__':
